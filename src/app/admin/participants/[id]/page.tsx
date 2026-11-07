@@ -176,7 +176,7 @@ export default async function ParticipantDetailPage({
             </CardHeader>
             <CardContent className="pt-4 p-0">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs">
+                <table className="w-full min-w-[550px] text-left border-collapse text-xs">
                   <thead>
                     <tr className="border-b border-brand-border bg-brand-rose/20 text-brand-gray uppercase text-[10px] tracking-wider">
                       <th className="py-3 px-4 text-center w-12">No</th>

@@ -87,6 +87,14 @@
       "phone": "081234567890",
       "consentAt": "2026-11-07T04:13:38.352Z",
       "createdAt": "2026-11-07T04:13:38.352Z"
+    },
+    {
+      "id": "58c16d7f-d4ec-47b6-86ea-0e5e66e4d6a2",
+      "fullName": "Ahmad Fauzi Test",
+      "email": "ahmad.fauzi@example.com",
+      "phone": "081234567890",
+      "consentAt": "2026-11-07T04:22:34.983Z",
+      "createdAt": "2026-11-07T04:22:34.983Z"
     }
   ],
   "submissions": [
@@ -273,6 +281,23 @@
       "createdAt": "2026-11-07T04:13:38.352Z",
       "updatedAt": "2026-11-07T04:13:38.370Z",
       "submittedAt": "2026-11-07T04:13:38.370Z",
+      "overallScore": 3,
+      "overallCategory": "Kadang-kadang muncul",
+      "primaryPatternCode": "REACTIVE"
+    },
+    {
+      "id": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "participantId": "58c16d7f-d4ec-47b6-86ea-0e5e66e4d6a2",
+      "assessmentVersion": "1.0.0",
+      "scoringVersion": "1.0.0",
+      "status": "completed",
+      "currentStep": 3,
+      "startedAt": "2026-11-07T04:22:34.983Z",
+      "resultToken": "9f7482de978b1124a8774359ca0de3d55899c550836de87e",
+      "resultTokenHash": "6626693e0aab241bce72a29f092a875cca5eaff24a034417703ef79e00190eb1",
+      "createdAt": "2026-11-07T04:22:34.983Z",
+      "updatedAt": "2026-11-07T04:22:35.005Z",
+      "submittedAt": "2026-11-07T04:22:35.005Z",
       "overallScore": 3,
       "overallCategory": "Kadang-kadang muncul",
       "primaryPatternCode": "REACTIVE"
@@ -2462,6 +2487,222 @@
       "questionCode": "Q27",
       "answerValue": 2,
       "createdAt": "2026-11-07T04:13:38.370Z"
+    },
+    {
+      "id": "5998641b-a855-4d22-bdcf-e227a916f2bb",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 1,
+      "questionCode": "Q01",
+      "answerValue": 3,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "0df1db1b-7604-4d88-b699-354b47284166",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 2,
+      "questionCode": "Q02",
+      "answerValue": 4,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "9a54c8b3-a5d5-4f66-a13a-8a2f02ccb511",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 3,
+      "questionCode": "Q03",
+      "answerValue": 2,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "d038334d-440c-4792-9c6b-7fbc9614b3f0",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 4,
+      "questionCode": "Q04",
+      "answerValue": 3,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "fd60c718-b887-432e-9be4-d484996e506f",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 5,
+      "questionCode": "Q05",
+      "answerValue": 4,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "72219bb5-def0-495e-a45b-cf83966249ec",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 6,
+      "questionCode": "Q06",
+      "answerValue": 2,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "efda2422-e6b8-413e-8f69-e64a5c6884f7",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 7,
+      "questionCode": "Q07",
+      "answerValue": 3,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "8a2d1171-ae08-4fc4-ac6b-e1098a602483",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 8,
+      "questionCode": "Q08",
+      "answerValue": 4,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "d2585da1-2ef0-42c3-acf1-55483d184370",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 9,
+      "questionCode": "Q09",
+      "answerValue": 2,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "9b28d7d1-c9e6-4c77-ba1d-6609886dbb50",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 10,
+      "questionCode": "Q10",
+      "answerValue": 3,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "302db0fc-2fea-4633-8cab-77e71a8ebf03",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 11,
+      "questionCode": "Q11",
+      "answerValue": 4,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "27a01cc8-76bc-4adb-91fb-55aaa07949ff",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 12,
+      "questionCode": "Q12",
+      "answerValue": 2,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "8c9e47f3-2951-4e71-8b69-a849606e482f",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 13,
+      "questionCode": "Q13",
+      "answerValue": 3,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "03e78c08-b50a-406c-be74-f7007ca70e7c",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 14,
+      "questionCode": "Q14",
+      "answerValue": 4,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "307d76e3-222a-4520-8907-703ae970ad56",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 15,
+      "questionCode": "Q15",
+      "answerValue": 2,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "7c20a538-d5ba-4cbf-8b88-5bcb6ad301c6",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 16,
+      "questionCode": "Q16",
+      "answerValue": 3,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "27f6789c-b7de-44b6-ba47-958364cd87fc",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 17,
+      "questionCode": "Q17",
+      "answerValue": 4,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "b970de81-998b-441c-a2ef-2a0c523a37a6",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 18,
+      "questionCode": "Q18",
+      "answerValue": 2,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "6833159a-428e-48ce-aa94-0699da7de0a5",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 19,
+      "questionCode": "Q19",
+      "answerValue": 3,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "fce8833b-f80e-41ef-994c-083b8b6e06ad",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 20,
+      "questionCode": "Q20",
+      "answerValue": 4,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "c9a81a37-6fcc-49cd-a061-280edcce321f",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 21,
+      "questionCode": "Q21",
+      "answerValue": 2,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "0f7afc12-f780-404c-b659-c0f67ae65b0b",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 22,
+      "questionCode": "Q22",
+      "answerValue": 3,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "e4e08b0c-9fe1-4c00-bda9-e7d2472e4476",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 23,
+      "questionCode": "Q23",
+      "answerValue": 4,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "4ab6dba2-04d4-4dff-85da-3136ee3e3226",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 24,
+      "questionCode": "Q24",
+      "answerValue": 2,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "9157506e-564c-49a9-853b-bd04a0f88c0f",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 25,
+      "questionCode": "Q25",
+      "answerValue": 3,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "cfa39312-801c-4d8f-972a-7b7d8992c53e",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 26,
+      "questionCode": "Q26",
+      "answerValue": 4,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "46551ebd-60bc-4dc1-884b-0282cdf572d5",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "itemNumber": 27,
+      "questionCode": "Q27",
+      "answerValue": 2,
+      "createdAt": "2026-11-07T04:22:35.005Z"
     }
   ],
   "patternResults": [
@@ -3652,6 +3893,114 @@
       "rank": 9,
       "isPriority": false,
       "createdAt": "2026-11-07T04:13:38.370Z"
+    },
+    {
+      "id": "6d931c12-c495-4210-99b1-25ca21209398",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "patternCode": "REACTIVE",
+      "score": 3,
+      "interpretationCategory": "Kadang-kadang muncul",
+      "level": "TINGGI",
+      "interpretationText": "TINGGI — Individu cenderung langsung bereaksi ketika menghadapi kritik, perbedaan pendapat, atau situasi yang memicu emosi. Perhatian dapat terlalu melekat pada pengalaman emosional dan kebutuhan diri saat itu. Secara perilaku, hal ini dapat terlihat melalui respons tergesa-gesa, nada bicara yang meningkat, atau perkataan yang kemudian disesali. Individu mungkin belum konsisten mengenali jeda antara munculnya emosi dan tindakan yang dipilih. Pengembangan utama adalah memperkuat regulasi emosi dan kemampuan merespons secara sadar.",
+      "rank": 1,
+      "isPriority": true,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "81d69552-c4b2-4365-a506-7d81c60cf3d2",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "patternCode": "ASSUMPTION",
+      "score": 3,
+      "interpretationCategory": "Kadang-kadang muncul",
+      "level": "TINGGI",
+      "interpretationText": "TINGGI — Individu cenderung memperlakukan interpretasi atau dugaan awal sebagai fakta objektif, terutama saat pesan yang diterima terasa ambigu atau tidak sesuai ekspektasi. Hal ini dapat menimbulkan rasa tidak dihargai yang sebenarnya belum tentu dimaksudkan oleh pihak lain. Pengembangan utama adalah memeriksa fakta, meminta klarifikasi terbuka, dan memisahkan tafsiran dari realitas sebelum menarik kesimpulan.",
+      "rank": 2,
+      "isPriority": true,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "00eca9b5-21a5-4995-afdd-10988033989f",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "patternCode": "DEFENSIVE",
+      "score": 3,
+      "interpretationCategory": "Kadang-kadang muncul",
+      "level": "TINGGI",
+      "interpretationText": "TINGGI — Individu sangat cepat merasa diserang saat menerima kritik sehingga terdorong untuk segera membela diri, menjelaskan alasan, atau menyalahkan orang lain. Kebutuhan untuk membuktikan diri benar dapat mengaburkan substansi masukan berharga. Pengembangan utama adalah mengenali dorongan defensif, mendengarkan kritik hingga tuntas tanpa memotong, dan mengevaluasi isi masukan secara objektif.",
+      "rank": 3,
+      "isPriority": true,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "de3673c1-7292-49e2-890a-e1493bfce2ff",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "patternCode": "AVOIDANCE",
+      "score": 3,
+      "interpretationCategory": "Kadang-kadang muncul",
+      "level": "TINGGI",
+      "interpretationText": "TINGGI — Individu sangat cenderung menunda, menghindar, atau memilih diam ketika berhadapan dengan kemungkinan konflik. Harapan bahwa masalah akan reda dengan sendirinya sering kali justru menumpuk ketegangan tersembunyi. Pengembangan utama adalah membedakan jeda emosional yang sehat dari penghindaran pasif, serta berani menjadwalkan pembicaraan mendalam secara konstruktif.",
+      "rank": 4,
+      "isPriority": false,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "1849a518-598c-440b-8010-af38f288571f",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "patternCode": "PEOPLE_PLEASING",
+      "score": 3,
+      "interpretationCategory": "Kadang-kadang muncul",
+      "level": "TINGGI",
+      "interpretationText": "TINGGI — Individu cenderung mengutamakan kenyamanan dan persetujuan orang lain, bahkan ketika mengabaikan kebutuhan atau pendapat pribadi. Penerimaan eksternal mungkin sangat memengaruhi rasa aman dan penghargaan diri. Hal ini dapat tampak melalui kesulitan menolak permintaan, menyetujui hal yang tidak diinginkan, atau memendam kekecewaan. Pengembangan utama adalah mengenali kebutuhan diri, memperkuat batas sehat, dan berlatih mengatakan tidak secara tegas serta hormat.",
+      "rank": 5,
+      "isPriority": false,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "e15f67c9-ff04-47f0-bfb7-9ac527e85bc5",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "patternCode": "CONTROL",
+      "score": 3,
+      "interpretationCategory": "Kadang-kadang muncul",
+      "level": "TINGGI",
+      "interpretationText": "TINGGI — Individu cenderung ingin memastikan proses dan hasil berjalan sesuai harapan dan standarnya sendiri. Dorongan ini sering kali berakar dari kepedulian terhadap kualitas, tetapi berisiko membatasi inisiatif orang lain dan menciptakan iklim saling menuntut. Pengembangan utama adalah menyepakati tujuan serta standar hasil di awal, lalu memberikan fleksibilitas dan kepercayaan terhadap metode yang dipilih orang lain.",
+      "rank": 6,
+      "isPriority": false,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "eca8d673-2758-44a2-837b-6b3f30cd5104",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "patternCode": "JUDGMENT",
+      "score": 3,
+      "interpretationCategory": "Kadang-kadang muncul",
+      "level": "TINGGI",
+      "interpretationText": "TINGGI — Individu sangat cepat memberi label atau mengevaluasi karakter seseorang sebelum memahami konteks di balik tindakannya. Sikap menghakimi ini dapat menciptakan jarak emosional dan membuat orang lain merasa tidak dipahami. Pengembangan utama adalah mendeskripsikan perilaku objektif yang terlihat, menunda pemberian label, mencari konteks lebih luas, dan menjelaskan dampak tanpa menyerang identitas individu.",
+      "rank": 7,
+      "isPriority": false,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "29b60530-c2f4-4f42-b61a-678628eb2fa6",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "patternCode": "LISTENING_GAP",
+      "score": 3,
+      "interpretationCategory": "Kadang-kadang muncul",
+      "level": "TINGGI",
+      "interpretationText": "TINGGI — Individu cenderung lebih berfokus pada pendapat atau responsnya sendiri daripada memahami pesan lawan bicara secara utuh. Perhatian dapat terserap oleh keinginan menjelaskan, membantah, atau mempertahankan posisi. Hal ini terlihat melalui kebiasaan menyela atau menjawab sebelum memahami persoalan. Pengembangan utama adalah melatih mendengarkan aktif, menahan diri untuk menyela, melakukan parafrasa, dan mengonfirmasi pemahaman sebelum menanggapi.",
+      "rank": 8,
+      "isPriority": false,
+      "createdAt": "2026-11-07T04:22:35.005Z"
+    },
+    {
+      "id": "317a817c-6657-4a44-9ab6-cab924e4c97c",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "patternCode": "ESCALATION",
+      "score": 3,
+      "interpretationCategory": "Kadang-kadang muncul",
+      "level": "TINGGI",
+      "interpretationText": "TINGGI — Individu cenderung menaikkan intensitas emosi, nada bicara, atau mengungkit persoalan masa lalu ketika konflik meningkat, serta sulit melakukan rekonsiliasi setelah perdebatan. Kata-kata mutlak seperti 'selalu' atau 'tidak pernah' sering memperburuk situasi. Pengembangan utama adalah mengenali sinyal awal peningkatan tensi, menyepakati waktu jeda untuk pendinginan, membatasi pembahasan pada isu saat ini, dan merumuskan langkah perbaikan konkret.",
+      "rank": 9,
+      "isPriority": false,
+      "createdAt": "2026-11-07T04:22:35.005Z"
     }
   ],
   "reflections": [
@@ -3746,6 +4095,17 @@
       "alternativeResponse": "Memberi jeda 3 detik dan mendengarkan masukan hingga tuntas.",
       "notes": "Latihan rutin hari ke-2.",
       "createdAt": "2026-11-07T04:13:38.384Z"
+    },
+    {
+      "id": "237c9ea2-1095-4ff0-a4cc-ce288e322186",
+      "submissionId": "f4e29436-0d96-4361-8b9e-78bf41e5dd64",
+      "triggerSituation": "Ketika dikritik secara mendadak di hadapan tim.",
+      "automaticThoughts": "Saya merasa tidak dihargai.",
+      "emotions": "Dada berdebar dan kesal.",
+      "responseTaken": "Membela diri dengan cepat.",
+      "alternativeResponse": "Memberi jeda 3 detik dan mendengarkan masukan hingga tuntas.",
+      "notes": "Latihan rutin hari ke-2.",
+      "createdAt": "2026-11-07T04:22:35.020Z"
     }
   ]
 }

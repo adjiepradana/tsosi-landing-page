@@ -215,7 +215,7 @@ export default async function AdminDashboardPage() {
 
             <CardContent className="pt-4 p-0">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs">
+                <table className="w-full min-w-[650px] text-left border-collapse text-xs">
                   <thead>
                     <tr className="border-b-2 border-brand-border bg-brand-rose/40 text-brand-gray uppercase text-[10px] font-black tracking-wider">
                       <th className="py-3 px-6">Nama Partisipan</th>

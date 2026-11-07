@@ -144,7 +144,7 @@ export default async function ParticipantsManagementPage({
           <Card className="border border-brand-border bg-white shadow-soft overflow-hidden">
             <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs">
+                <table className="w-full min-w-[650px] text-left border-collapse text-xs">
                   <thead>
                     <tr className="border-b border-brand-border bg-brand-rose/30 text-brand-gray uppercase text-[10px] tracking-wider">
                       <th className="py-3 px-6">Nama Partisipan</th>
