@@ -9,7 +9,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowRight,
-  ShieldCheck,
   ArrowLeft,
   Loader2,
   Sparkles,
@@ -94,22 +93,26 @@ export default function AssessmentStartPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-brand-rose/40 via-brand-ivory to-white flex flex-col justify-between">
+    <div className="min-h-screen bg-white flex flex-col justify-between relative overflow-hidden">
+      {/* Dynamic ambient blur */}
+      <div className="absolute top-0 right-10 h-96 w-96 rounded-full bg-brand-vibrant/10 blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-10 left-10 h-80 w-80 rounded-full bg-brand-burgundy/10 blur-[90px] pointer-events-none" />
+
       {/* Top Header */}
-      <header className="border-b border-brand-border/60 bg-white/90 backdrop-blur-md py-4 px-4 sm:px-8">
+      <header className="border-b border-brand-border bg-white/90 backdrop-blur-md py-4 px-4 sm:px-8 relative z-10">
         <div className="mx-auto max-w-4xl flex items-center justify-between">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-brand-gray hover:text-brand-burgundy transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-bold text-brand-gray hover:text-brand-vibrant transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Kembali ke Beranda</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <div className="relative h-8 w-8 overflow-hidden rounded-full border border-brand-burgundy/20">
+          <div className="flex items-center gap-2.5">
+            <div className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-brand-vibrant/30 p-0.5">
               <Image src="/images/logo.png" alt="Logo" width={32} height={32} className="object-contain" />
             </div>
-            <span className="font-serif font-bold text-xs sm:text-sm text-brand-charcoal">
+            <span className="font-black text-xs sm:text-sm text-brand-charcoal tracking-tight">
               Personal Soul Blueprint™
             </span>
           </div>
@@ -117,27 +120,27 @@ export default function AssessmentStartPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative z-10">
         <div className="w-full max-w-xl space-y-6">
-          <Card className="border border-brand-border shadow-elevated bg-white/95 rounded-3xl backdrop-blur-xl">
-            <CardHeader className="text-center pb-6 border-b border-brand-border/60">
+          <Card className="border-2 border-brand-border shadow-elevated bg-white rounded-3xl">
+            <CardHeader className="text-center pb-6 border-b border-brand-border">
               <div className="flex justify-center mb-2">
-                <Badge variant="secondary" className="gap-1.5 px-3.5 py-1 text-xs font-semibold">
-                  <Sparkles className="h-3.5 w-3.5 text-brand-burgundy" />
+                <Badge className="bg-brand-rose text-brand-burgundy border-brand-vibrant/20 gap-1.5 px-4 py-1 text-xs font-black uppercase tracking-wider">
+                  <Sparkles className="h-3.5 w-3.5 text-brand-vibrant" />
                   <span>Langkah 1 dari 3: Registrasi Singkat</span>
                 </Badge>
               </div>
-              <CardTitle className="font-serif text-2xl sm:text-3xl text-brand-charcoal">
+              <CardTitle className="font-black text-2xl sm:text-3xl text-brand-charcoal tracking-tight">
                 Mulai Refleksi Personal Anda
               </CardTitle>
-              <CardDescription className="text-xs sm:text-sm text-brand-gray pt-1 max-w-md mx-auto">
+              <CardDescription className="text-xs sm:text-sm text-brand-gray font-medium pt-1 max-w-md mx-auto">
                 Cukup isi data dasar berikut untuk mengadministrasikan asesmen dan menautkan laporan personal Anda.
               </CardDescription>
             </CardHeader>
 
             <CardContent className="pt-6">
               {generalError && (
-                <div className="mb-6 rounded-2xl bg-red-50 border border-red-200 p-4 text-xs sm:text-sm text-red-700">
+                <div className="mb-6 rounded-2xl bg-red-50 border-2 border-red-200 p-4 text-xs sm:text-sm text-red-700 font-bold">
                   {generalError}
                 </div>
               )}
@@ -145,11 +148,11 @@ export default function AssessmentStartPage() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Full Name */}
                 <div className="space-y-1.5">
-                  <label htmlFor="fullName" className="block text-xs font-bold uppercase tracking-wider text-brand-charcoal">
-                    Nama Lengkap <span className="text-brand-burgundy">*</span>
+                  <label htmlFor="fullName" className="block text-xs font-black uppercase tracking-wider text-brand-charcoal">
+                    Nama Lengkap <span className="text-brand-vibrant">*</span>
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3.5 top-3.5 h-4 w-4 text-brand-gray" />
+                    <User className="absolute left-3.5 top-3.5 h-4 w-4 text-brand-vibrant" />
                     <input
                       id="fullName"
                       type="text"
@@ -158,23 +161,23 @@ export default function AssessmentStartPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, fullName: e.target.value })
                       }
-                      className={`w-full rounded-xl border bg-brand-ivory/40 pl-10 pr-4 py-3 text-sm text-brand-charcoal transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-burgundy/40 ${
-                        errors.fullName ? "border-red-400" : "border-brand-border"
+                      className={`w-full rounded-2xl border-2 pl-11 pr-4 py-3.5 text-sm font-semibold text-brand-charcoal transition-all focus:bg-white focus:outline-none focus:border-brand-vibrant focus:ring-4 focus:ring-brand-vibrant/10 ${
+                        errors.fullName ? "border-red-400 bg-red-50/30" : "border-brand-border bg-white"
                       }`}
                     />
                   </div>
                   {errors.fullName && (
-                    <p className="text-xs text-red-600 mt-1">{errors.fullName}</p>
+                    <p className="text-xs text-red-600 font-bold mt-1">{errors.fullName}</p>
                   )}
                 </div>
 
                 {/* Email */}
                 <div className="space-y-1.5">
-                  <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-brand-charcoal">
-                    Alamat Email Aktif <span className="text-brand-burgundy">*</span>
+                  <label htmlFor="email" className="block text-xs font-black uppercase tracking-wider text-brand-charcoal">
+                    Alamat Email Aktif <span className="text-brand-vibrant">*</span>
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3.5 top-3.5 h-4 w-4 text-brand-gray" />
+                    <Mail className="absolute left-3.5 top-3.5 h-4 w-4 text-brand-vibrant" />
                     <input
                       id="email"
                       type="email"
@@ -183,26 +186,26 @@ export default function AssessmentStartPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, email: e.target.value })
                       }
-                      className={`w-full rounded-xl border bg-brand-ivory/40 pl-10 pr-4 py-3 text-sm text-brand-charcoal transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-burgundy/40 ${
-                        errors.email ? "border-red-400" : "border-brand-border"
+                      className={`w-full rounded-2xl border-2 pl-11 pr-4 py-3.5 text-sm font-semibold text-brand-charcoal transition-all focus:bg-white focus:outline-none focus:border-brand-vibrant focus:ring-4 focus:ring-brand-vibrant/10 ${
+                        errors.email ? "border-red-400 bg-red-50/30" : "border-brand-border bg-white"
                       }`}
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-xs text-red-600 mt-1">{errors.email}</p>
+                    <p className="text-xs text-red-600 font-bold mt-1">{errors.email}</p>
                   )}
-                  <p className="text-[11px] text-brand-gray">
+                  <p className="text-[11px] text-brand-gray font-medium">
                     Tautan laporan hasil asesmen akan ditautkan ke alamat email ini.
                   </p>
                 </div>
 
                 {/* Phone / WhatsApp */}
                 <div className="space-y-1.5">
-                  <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-brand-charcoal">
-                    Nomor WhatsApp / HP <span className="text-brand-burgundy">*</span>
+                  <label htmlFor="phone" className="block text-xs font-black uppercase tracking-wider text-brand-charcoal">
+                    Nomor WhatsApp / HP <span className="text-brand-vibrant">*</span>
                   </label>
                   <div className="relative">
-                    <Phone className="absolute left-3.5 top-3.5 h-4 w-4 text-brand-gray" />
+                    <Phone className="absolute left-3.5 top-3.5 h-4 w-4 text-brand-vibrant" />
                     <input
                       id="phone"
                       type="tel"
@@ -211,36 +214,36 @@ export default function AssessmentStartPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, phone: e.target.value })
                       }
-                      className={`w-full rounded-xl border bg-brand-ivory/40 pl-10 pr-4 py-3 text-sm text-brand-charcoal transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-burgundy/40 ${
-                        errors.phone ? "border-red-400" : "border-brand-border"
+                      className={`w-full rounded-2xl border-2 pl-11 pr-4 py-3.5 text-sm font-semibold text-brand-charcoal transition-all focus:bg-white focus:outline-none focus:border-brand-vibrant focus:ring-4 focus:ring-brand-vibrant/10 ${
+                        errors.phone ? "border-red-400 bg-red-50/30" : "border-brand-border bg-white"
                       }`}
                     />
                   </div>
                   {errors.phone && (
-                    <p className="text-xs text-red-600 mt-1">{errors.phone}</p>
+                    <p className="text-xs text-red-600 font-bold mt-1">{errors.phone}</p>
                   )}
                 </div>
 
                 {/* Privacy Consent */}
                 <div className="pt-2">
-                  <label className="flex items-start gap-3 cursor-pointer group bg-brand-ivory/50 p-3.5 rounded-xl border border-brand-border/60">
+                  <label className="flex items-start gap-3 cursor-pointer group bg-brand-rose/40 p-4 rounded-2xl border-2 border-brand-vibrant/20">
                     <input
                       type="checkbox"
                       checked={formData.consent}
                       onChange={(e) =>
                         setFormData({ ...formData, consent: e.target.checked })
                       }
-                      className="mt-0.5 h-4 w-4 rounded border-brand-border text-brand-burgundy focus:ring-brand-burgundy accent-brand-burgundy"
+                      className="mt-0.5 h-4 w-4 rounded border-brand-border text-brand-vibrant focus:ring-brand-vibrant accent-brand-burgundy"
                     />
-                    <span className="text-xs text-brand-charcoal/90 leading-relaxed">
-                      Saya memahami bahwa asesmen ini adalah alat psikoedukasi dan refleksi diri (bukan diagnosis psikologis klinis), dan saya menyetujui pemrosesan data saya sesuai{" "}
-                      <Link href="/privacy" target="_blank" className="text-brand-burgundy font-semibold underline">
+                    <span className="text-xs text-brand-charcoal font-medium leading-relaxed">
+                      Saya memahami bahwa asesmen ini adalah sarana psikoedukasi dan refleksi diri (bukan diagnosis klinis), dan saya menyetujui pemrosesan data saya sesuai{" "}
+                      <Link href="/privacy" target="_blank" className="text-brand-vibrant font-black underline">
                         Kebijakan Privasi
                       </Link>.
                     </span>
                   </label>
                   {errors.consent && (
-                    <p className="text-xs text-red-600 mt-1 pl-1">{errors.consent}</p>
+                    <p className="text-xs text-red-600 font-bold mt-1 pl-1">{errors.consent}</p>
                   )}
                 </div>
 
@@ -250,7 +253,7 @@ export default function AssessmentStartPage() {
                     type="submit"
                     size="lg"
                     disabled={isSubmitting}
-                    className="w-full gap-2 rounded-xl bg-brand-burgundy hover:bg-brand-plum text-white shadow-card py-6 text-base font-semibold transition-all hover:scale-[1.01]"
+                    className="w-full gap-3 rounded-2xl bg-gradient-to-r from-brand-burgundy to-brand-vibrant hover:brightness-110 text-white shadow-bold py-7 text-base font-black transition-all hover:scale-[1.02]"
                   >
                     {isSubmitting ? (
                       <>
@@ -268,13 +271,13 @@ export default function AssessmentStartPage() {
               </form>
 
               {/* Security reassurance */}
-              <div className="mt-6 pt-4 border-t border-brand-border/60 grid grid-cols-2 gap-2 text-center text-[11px] text-brand-gray">
-                <span className="flex items-center justify-center gap-1">
-                  <Lock className="h-3.5 w-3.5 text-brand-burgundy" />
+              <div className="mt-6 pt-4 border-t border-brand-border grid grid-cols-2 gap-2 text-center text-xs font-bold text-brand-charcoal">
+                <span className="flex items-center justify-center gap-1.5">
+                  <Lock className="h-4 w-4 text-brand-vibrant" />
                   Privat & Terenkripsi
                 </span>
-                <span className="flex items-center justify-center gap-1">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                <span className="flex items-center justify-center gap-1.5 text-emerald-700">
+                  <CheckCircle2 className="h-4 w-4" />
                   Tanpa Kata Sandi / OTP
                 </span>
               </div>
@@ -283,7 +286,7 @@ export default function AssessmentStartPage() {
         </div>
       </main>
 
-      <footer className="py-4 text-center text-xs text-brand-gray border-t border-brand-border/40">
+      <footer className="py-4 text-center text-xs font-semibold text-brand-gray border-t border-brand-border">
         © {new Date().getFullYear()} The Soul of Speaking Indonesia • Personal Soul Blueprint™
       </footer>
     </div>

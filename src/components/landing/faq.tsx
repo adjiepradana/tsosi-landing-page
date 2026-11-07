@@ -14,7 +14,7 @@ export function FAQ() {
     },
     {
       q: "Berapa lama waktu yang dibutuhkan untuk menyelesaikan asesmen?",
-      a: "Asesmen ini terdiri dari 27 pernyataan reflektif terstruktur. Rata-rata peserta menyelesaikannya dalam waktu 7 hingga 10 menit tanpa terburu-buru.",
+      a: "Asesmen ini terdiri dari 27 pernyataan reflektif terstruktur. Rata-rata peserta menyelesaikannya dalam waktu 5 hingga 7 menit tanpa terburu-buru.",
     },
     {
       q: "Apakah asesmen ini berbayar atau memerlukan langganan?",
@@ -22,11 +22,11 @@ export function FAQ() {
     },
     {
       q: "Apakah informasi pribadi dan data refleksi saya aman?",
-      a: "Sangat aman. Data Anda diproses dengan standar keamanan server terenkripsi. Hasil asesmen Anda dilindungi dengan token akses acak yang unik, sehingga hanya Anda yang memegang tautan tersebut yang dapat melihat laporan lengkap Anda.",
+      a: "Sangat aman. Data Anda diproses dengan standar enkripsi server. Hasil asesmen Anda dilindungi dengan token akses acak yang unik, sehingga hanya Anda yang memegang tautan tersebut yang dapat melihat laporan lengkap Anda.",
     },
     {
       q: "Apakah hasil asesmen ini merupakan diagnosis psikologis profesional?",
-      a: "Bukan. Instrumen ini dirancang sebagai sarana refleksi diri dan psikoedukasi awal untuk perkembangan komunikasi interpersonal. Asesmen ini bukan alat diagnosis klinis, bukan pengukuran gelombang otak, dan bukan pengganti konsultasi psikolog atau psikiater profesional.",
+      a: "Bukan. Instrumen ini dirancang sebagai sarana refleksi diri dan psikoedukasi untuk perkembangan komunikasi interpersonal. Asesmen ini bukan alat diagnosis klinis dan bukan pengganti konsultasi psikolog atau psikiater profesional.",
     },
     {
       q: "Dapatkah saya mengulang asesmen ini di masa mendatang?",
@@ -39,16 +39,16 @@ export function FAQ() {
   ];
 
   return (
-    <section id="faq" className="py-20 bg-brand-ivory/50 border-t border-brand-border/60">
+    <section id="faq" className="py-24 bg-white border-t border-brand-border">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4 mb-16">
-          <Badge variant="secondary" className="px-3.5 py-1 text-xs">
+          <Badge className="bg-brand-rose text-brand-burgundy border-brand-vibrant/20 px-4 py-1 text-xs font-black uppercase tracking-wider">
             Pertanyaan Umum
           </Badge>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-brand-charcoal">
+          <h2 className="font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight text-brand-charcoal">
             Frequently Asked Questions
           </h2>
-          <p className="text-base text-brand-gray">
+          <p className="text-base sm:text-lg text-brand-gray font-medium">
             Temukan jawaban atas hal-hal penting seputar asesmen dan metodologi Personal Soul Blueprint™.
           </p>
         </div>
@@ -59,7 +59,7 @@ export function FAQ() {
             return (
               <div
                 key={idx}
-                className="rounded-2xl border border-brand-border bg-white transition-all duration-200 overflow-hidden"
+                className="rounded-2xl border-2 border-brand-border bg-white transition-all duration-200 overflow-hidden hover:border-brand-vibrant/50 shadow-soft"
               >
                 <button
                   type="button"
@@ -67,17 +67,17 @@ export function FAQ() {
                   className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-serif text-base sm:text-lg font-bold text-brand-charcoal pr-4">
+                  <span className="font-extrabold text-base sm:text-lg text-brand-charcoal pr-4 tracking-tight">
                     {faq.q}
                   </span>
                   <ChevronDown
-                    className={`h-5 w-5 text-brand-burgundy shrink-0 transition-transform duration-200 ${
+                    className={`h-5 w-5 text-brand-vibrant shrink-0 transition-transform duration-200 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-6 pb-6 text-sm text-brand-gray leading-relaxed border-t border-brand-border/40 pt-4">
+                  <div className="px-6 pb-6 text-sm text-brand-gray font-medium leading-relaxed border-t border-brand-border pt-4">
                     {faq.a}
                   </div>
                 )}

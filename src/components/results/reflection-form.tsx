@@ -63,131 +63,139 @@ export function ReflectionForm({
   };
 
   return (
-    <Card className="border border-brand-border bg-white shadow-soft print:hidden">
-      <CardHeader className="border-b border-brand-border/60 pb-5">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-burgundy mb-1">
+    <Card className="border-2 border-brand-border bg-white shadow-soft print-card">
+      <CardHeader className="border-b border-brand-border pb-5">
+        <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-brand-vibrant mb-1">
           <Sparkles className="h-4 w-4" />
-          <span>Lembar Refleksi Personal</span>
+          <span>Lembar Refleksi Diri Terpandu</span>
         </div>
-        <CardTitle className="font-serif text-2xl text-brand-charcoal">
-          Ubah Kesadaran Menjadi Tindakan Nyata
+        <CardTitle className="font-black text-2xl text-brand-charcoal tracking-tight">
+          Jurnal Eksplorasi Situasi Konflik
         </CardTitle>
-        <CardDescription className="text-xs sm:text-sm text-brand-gray pt-1">
-          Gunakan format refleksi mandiri ini untuk mengurai salah satu situasi konflik atau percakapan sulit yang baru saja atau kerap Anda alami (terutama terkait pola {topPatternTitle || "dominan Anda"}).
+        <CardDescription className="text-xs sm:text-sm text-brand-gray font-medium pt-1">
+          Gunakan panduan berikut untuk mendokumentasikan salah satu peristiwa nyata di mana pola komunikasi dominan Anda terpicu.
         </CardDescription>
+        {topPatternTitle && (
+          <div className="mt-2 text-xs font-bold text-brand-burgundy bg-brand-rose/60 p-2.5 rounded-xl border border-brand-vibrant/20 inline-block">
+            Pola Utama Anda: {topPatternTitle}
+          </div>
+        )}
       </CardHeader>
 
       <CardContent className="pt-6">
         {saveSuccess && (
-          <div className="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-xs sm:text-sm text-emerald-800 flex items-center gap-2.5">
-            <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />
-            <span>Refleksi personal Anda berhasil disimpan dan ditautkan ke laporan ini!</span>
+          <div className="mb-6 rounded-2xl bg-emerald-50 border-2 border-emerald-200 p-4 text-xs sm:text-sm text-emerald-800 flex items-center gap-2.5 font-bold">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
+            <span>Catatan refleksi Anda berhasil disimpan dengan aman ke tautan personal ini.</span>
           </div>
         )}
 
         {errorMessage && (
-          <div className="mb-6 rounded-xl bg-red-50 border border-red-200 p-4 text-xs sm:text-sm text-red-800 flex items-center gap-2.5">
-            <AlertCircle className="h-5 w-5 shrink-0 text-red-600" />
+          <div className="mb-6 rounded-2xl bg-red-50 border-2 border-red-200 p-4 text-xs sm:text-sm text-red-700 flex items-center gap-2 font-bold">
+            <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* 1. Trigger */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-brand-charcoal">
-              1. Situasi Pemicu (Trigger Situation)
-            </label>
-            <textarea
-              rows={2}
-              placeholder="Contoh: Saat rekan kerja mengkritik hasil laporan saya di hadapan forum rapat..."
-              value={formData.triggerSituation}
-              onChange={(e) =>
-                setFormData({ ...formData, triggerSituation: e.target.value })
-              }
-              className="w-full rounded-xl border border-brand-border bg-brand-ivory/30 p-3.5 text-xs sm:text-sm text-brand-charcoal focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-burgundy/40"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* 1. Situasi Pemicu */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black uppercase tracking-wider text-brand-charcoal">
+                1. Situasi Pemicu (Trigger)
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Apa yang terjadi? Siapa yang terlibat? Kata-kata atau tindakan apa yang memicu reaksi Anda?"
+                value={formData.triggerSituation}
+                onChange={(e) =>
+                  setFormData({ ...formData, triggerSituation: e.target.value })
+                }
+                className="w-full rounded-2xl border-2 border-brand-border p-3.5 text-xs sm:text-sm font-medium text-brand-charcoal focus:border-brand-vibrant focus:outline-none focus:ring-4 focus:ring-brand-vibrant/10 bg-white"
+              />
+            </div>
+
+            {/* 2. Pikiran Otomatis */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black uppercase tracking-wider text-brand-charcoal">
+                2. Pikiran Otomatis Saat Itu
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Kalimat apa yang langsung melintas di kepala Anda saat itu? (misal: 'Dia meremehkanku', 'Harus kubuktikan ia salah')"
+                value={formData.automaticThoughts}
+                onChange={(e) =>
+                  setFormData({ ...formData, automaticThoughts: e.target.value })
+                }
+                className="w-full rounded-2xl border-2 border-brand-border p-3.5 text-xs sm:text-sm font-medium text-brand-charcoal focus:border-brand-vibrant focus:outline-none focus:ring-4 focus:ring-brand-vibrant/10 bg-white"
+              />
+            </div>
+
+            {/* 3. Emosi & Sensasi Tubuh */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black uppercase tracking-wider text-brand-charcoal">
+                3. Emosi & Sensasi Fisik
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Apa emosi yang dirasakan (marah, malu, takut, cemas)? Bagian tubuh mana yang bereaksi (dada berdebar, pundak tegang)?"
+                value={formData.emotions}
+                onChange={(e) =>
+                  setFormData({ ...formData, emotions: e.target.value })
+                }
+                className="w-full rounded-2xl border-2 border-brand-border p-3.5 text-xs sm:text-sm font-medium text-brand-charcoal focus:border-brand-vibrant focus:outline-none focus:ring-4 focus:ring-brand-vibrant/10 bg-white"
+              />
+            </div>
+
+            {/* 4. Respon Nyata */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black uppercase tracking-wider text-brand-charcoal">
+                4. Tindakan / Respon Nyata Anda
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Apa yang akhirnya Anda katakan atau lakukan saat itu? (misal: mendebat cepat, bungkam, meminta maaf buru-buru)"
+                value={formData.responseTaken}
+                onChange={(e) =>
+                  setFormData({ ...formData, responseTaken: e.target.value })
+                }
+                className="w-full rounded-2xl border-2 border-brand-border p-3.5 text-xs sm:text-sm font-medium text-brand-charcoal focus:border-brand-vibrant focus:outline-none focus:ring-4 focus:ring-brand-vibrant/10 bg-white"
+              />
+            </div>
           </div>
 
-          {/* 2. Automatic Thoughts */}
+          {/* 5. Alternatif Respon Sadar */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-brand-charcoal">
-              2. Pikiran Otomatis yang Muncul (Automatic Thoughts)
+            <label className="block text-xs font-black uppercase tracking-wider text-brand-vibrant">
+              5. Alternatif Respons Sadar di Masa Depan
             </label>
             <textarea
-              rows={2}
-              placeholder="Contoh: Dia sengaja ingin menjatuhkan wibawa saya dan menganggap saya tidak kompeten..."
-              value={formData.automaticThoughts}
-              onChange={(e) =>
-                setFormData({ ...formData, automaticThoughts: e.target.value })
-              }
-              className="w-full rounded-xl border border-brand-border bg-brand-ivory/30 p-3.5 text-xs sm:text-sm text-brand-charcoal focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-burgundy/40"
-            />
-          </div>
-
-          {/* 3. Emotions & Physical Sensations */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-brand-charcoal">
-              3. Emosi & Sensasi Tubuh (Emotions & Bodily Sensations)
-            </label>
-            <input
-              type="text"
-              placeholder="Contoh: Detak jantung memburu, dada panas, rasa tersinggung dan malu..."
-              value={formData.emotions}
-              onChange={(e) =>
-                setFormData({ ...formData, emotions: e.target.value })
-              }
-              className="w-full rounded-xl border border-brand-border bg-brand-ivory/30 px-3.5 py-2.5 text-xs sm:text-sm text-brand-charcoal focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-burgundy/40"
-            />
-          </div>
-
-          {/* 4. Response Taken */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-brand-charcoal">
-              4. Respons yang Biasanya Saya Ambil (Reaksi Otomatis)
-            </label>
-            <textarea
-              rows={2}
-              placeholder="Contoh: Langsung memotong bicaranya dan membela diri dengan nada tinggi..."
-              value={formData.responseTaken}
-              onChange={(e) =>
-                setFormData({ ...formData, responseTaken: e.target.value })
-              }
-              className="w-full rounded-xl border border-brand-border bg-brand-ivory/30 p-3.5 text-xs sm:text-sm text-brand-charcoal focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-burgundy/40"
-            />
-          </div>
-
-          {/* 5. Alternative Conscious Response */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-brand-charcoal text-brand-burgundy">
-              5. Respons Sadar Alternatif yang Ingin Saya Pilih (Conscious Response)
-            </label>
-            <textarea
-              rows={2}
-              placeholder="Contoh: Menarik nafas dalam 3 detik, mengucapkan terima kasih atas masukan, dan meminta waktu membahas detailnya secara privat..."
+              rows={3}
+              placeholder="Jika situasi serupa terjadi lagi nanti, jeda hening atau kalimat apa yang ingin Anda pilih dengan penuh kesadaran?"
               value={formData.alternativeResponse}
               onChange={(e) =>
                 setFormData({ ...formData, alternativeResponse: e.target.value })
               }
-              className="w-full rounded-xl border border-brand-burgundy/30 bg-brand-rose/20 p-3.5 text-xs sm:text-sm text-brand-charcoal focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-burgundy/40"
+              className="w-full rounded-2xl border-2 border-brand-vibrant/40 p-3.5 text-xs sm:text-sm font-medium text-brand-charcoal focus:border-brand-vibrant focus:outline-none focus:ring-4 focus:ring-brand-vibrant/10 bg-brand-rose/20"
             />
           </div>
 
-          <div className="pt-2">
+          {/* Submit Action */}
+          <div className="pt-3 flex justify-end no-print">
             <Button
               type="submit"
               disabled={isSaving}
-              className="gap-2 bg-brand-burgundy hover:bg-brand-plum text-white font-medium"
+              className="gap-2.5 rounded-2xl bg-gradient-to-r from-brand-burgundy to-brand-vibrant hover:brightness-110 text-white font-black shadow-bold py-6 px-8 text-sm"
             >
               {isSaving ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Menyimpan Refleksi...</span>
+                  <span>Menyimpan Jurnal...</span>
                 </>
               ) : (
                 <>
                   <Save className="h-4 w-4" />
-                  <span>Simpan Lembar Refleksi</span>
+                  <span>Simpan Catatan Refleksi</span>
                 </>
               )}
             </Button>

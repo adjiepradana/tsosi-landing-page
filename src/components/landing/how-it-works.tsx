@@ -37,17 +37,17 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-white border-t border-brand-border/60">
+    <section id="how-it-works" className="py-24 bg-white border-t border-brand-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <Badge variant="secondary" className="px-3.5 py-1 text-xs font-semibold">
+          <Badge className="bg-brand-rose text-brand-burgundy border-brand-vibrant/20 px-4 py-1 text-xs font-black uppercase tracking-wider">
             Alur Langkah Sederhana
           </Badge>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-charcoal">
-            Pengalaman Refleksi yang Menenangkan & Terarah
+          <h2 className="font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight text-brand-charcoal">
+            Pengalaman Refleksi Terarah & Berdaya
           </h2>
-          <p className="text-base sm:text-lg text-brand-gray leading-relaxed">
-            Hanya membutuhkan waktu 7 hingga 10 menit tanpa gangguan untuk memperoleh pemahaman mendalam tentang diri Anda.
+          <p className="text-base sm:text-lg text-brand-gray font-medium leading-relaxed">
+            Hanya membutuhkan waktu 5 hingga 7 menit untuk memperoleh peta komprehensif tentang dinamika komunikasi Anda.
           </p>
         </div>
 
@@ -58,33 +58,33 @@ export function HowItWorks() {
             return (
               <div
                 key={step.num}
-                className="relative rounded-3xl border border-brand-border/90 bg-gradient-to-b from-brand-ivory/60 via-white to-brand-ivory/30 p-7 shadow-soft hover:shadow-card hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                className="group relative rounded-3xl border-2 border-brand-border bg-white p-7 shadow-soft hover:shadow-bold hover:border-brand-vibrant hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
                   {/* Step Number & Icon */}
                   <div className="flex items-center justify-between mb-6">
-                    <span className="font-serif text-3xl font-extrabold text-brand-burgundy/30 group-hover:text-brand-burgundy transition-colors">
+                    <span className="font-black text-4xl text-brand-border group-hover:text-brand-vibrant transition-colors">
                       {step.num}
                     </span>
-                    <div className="h-12 w-12 rounded-2xl bg-brand-rose flex items-center justify-center text-brand-burgundy shadow-sm">
+                    <div className="h-12 w-12 rounded-2xl bg-brand-rose flex items-center justify-center text-brand-burgundy shadow-sm group-hover:bg-gradient-to-r group-hover:from-brand-burgundy group-hover:to-brand-vibrant group-hover:text-white transition-all duration-300 border border-brand-vibrant/20">
                       <Icon className="h-6 w-6" />
                     </div>
                   </div>
 
-                  <span className="inline-block rounded-md bg-brand-rose/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-burgundy mb-2">
+                  <span className="inline-block rounded-lg bg-brand-rose px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-brand-burgundy mb-2 border border-brand-vibrant/20">
                     {step.highlight}
                   </span>
 
-                  <h3 className="font-serif text-xl font-bold text-brand-charcoal mb-2">
+                  <h3 className="font-extrabold text-xl text-brand-charcoal mb-2 tracking-tight">
                     {step.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-brand-gray leading-relaxed">
+                  <p className="text-xs sm:text-sm text-brand-gray font-medium leading-relaxed">
                     {step.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-brand-border/60 text-[11px] font-semibold text-brand-charcoal/70 flex items-center gap-1.5">
-                  <ShieldCheck className="h-3.5 w-3.5 text-brand-burgundy" />
+                <div className="mt-6 pt-4 border-t border-brand-border text-[11px] font-bold text-brand-charcoal/80 flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4 text-brand-vibrant" />
                   <span>Langkah #{idx + 1} Terpandu</span>
                 </div>
               </div>
@@ -97,10 +97,10 @@ export function HowItWorks() {
           <Link href="/assessment/start">
             <Button
               size="lg"
-              className="gap-2.5 rounded-xl bg-brand-burgundy hover:bg-brand-plum text-white font-semibold py-6 px-8 shadow-card hover:shadow-elevated transition-all"
+              className="gap-3 rounded-2xl bg-gradient-to-r from-brand-burgundy to-brand-vibrant hover:brightness-110 text-white font-extrabold py-7 px-9 text-base shadow-bold hover:scale-105 transition-all"
             >
-              <span>Langkah Pertama: Isi Identitas Peserta</span>
-              <ArrowRight className="h-4 w-4" />
+              <span>Langkah Pertama: Mulai Isi Identitas</span>
+              <ArrowRight className="h-5 w-5" />
             </Button>
           </Link>
         </div>

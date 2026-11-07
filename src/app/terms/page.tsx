@@ -8,43 +8,43 @@ import { ArrowLeft, ShieldAlert } from "lucide-react";
 
 export default function TermsPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-brand-ivory">
+    <div className="flex min-h-screen flex-col bg-white">
       <Navbar />
       <main className="flex-1 mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 space-y-8">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs text-brand-gray hover:text-brand-burgundy"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-gray hover:text-brand-vibrant"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Kembali ke Beranda</span>
         </Link>
 
-        <Card className="border border-brand-border bg-white shadow-soft p-6 sm:p-10 space-y-6">
-          <div className="space-y-2 border-b border-brand-border/60 pb-6">
-            <Badge variant="secondary" className="text-xs font-semibold">
+        <Card className="border-2 border-brand-border bg-white shadow-soft p-6 sm:p-10 space-y-6">
+          <div className="space-y-2 border-b border-brand-border pb-6">
+            <Badge className="bg-brand-rose text-brand-burgundy border-brand-vibrant/20 text-xs font-black uppercase tracking-wider">
               Syarat & Batasan Penggunaan
             </Badge>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-brand-charcoal">
+            <h1 className="font-black text-3xl sm:text-4xl text-brand-charcoal tracking-tight">
               Ketentuan Penggunaan Personal Soul Blueprint™
             </h1>
-            <p className="text-xs text-brand-gray">
+            <p className="text-xs font-medium text-brand-gray">
               The Soul of Speaking Indonesia
             </p>
           </div>
 
-          <div className="space-y-6 text-xs sm:text-sm text-brand-gray leading-relaxed">
-            <div className="rounded-2xl bg-amber-50 border border-amber-200 p-5 text-amber-900 space-y-2">
-              <div className="flex items-center gap-2 font-bold text-sm">
+          <div className="space-y-6 text-xs sm:text-sm text-brand-gray font-medium leading-relaxed">
+            <div className="rounded-2xl bg-amber-50 border-2 border-amber-200 p-5 text-amber-900 space-y-2">
+              <div className="flex items-center gap-2 font-black text-sm">
                 <ShieldAlert className="h-5 w-5 text-amber-700" />
                 <span>Pernyataan Batasan Non-Diagnosis (Penting)</span>
               </div>
-              <p className="text-xs leading-relaxed">
+              <p className="text-xs leading-relaxed font-medium">
                 Personal Soul Blueprint™ adalah instrumen psikoedukasi awal dan refleksi diri. Instrumen ini <strong>bukan alat diagnosis psikologis klinis, bukan diagnosis gangguan kejiwaan, bukan pengukuran aktivitas biologis/otak</strong>, dan bukan pengganti konsultasi dengan psikolog klinis atau psikiater berlisensi.
               </p>
             </div>
 
             <section className="space-y-2">
-              <h2 className="font-serif text-lg font-bold text-brand-charcoal">
+              <h2 className="font-black text-lg text-brand-charcoal tracking-tight">
                 1. Sifat Penggunaan
               </h2>
               <p>
@@ -53,7 +53,7 @@ export default function TermsPage() {
             </section>
 
             <section className="space-y-2">
-              <h2 className="font-serif text-lg font-bold text-brand-charcoal">
+              <h2 className="font-black text-lg text-brand-charcoal tracking-tight">
                 2. Hak Kekayaan Intelektual
               </h2>
               <p>
@@ -62,7 +62,7 @@ export default function TermsPage() {
             </section>
 
             <section className="space-y-2">
-              <h2 className="font-serif text-lg font-bold text-brand-charcoal">
+              <h2 className="font-black text-lg text-brand-charcoal tracking-tight">
                 3. Batasan Tanggung Jawab
               </h2>
               <p>

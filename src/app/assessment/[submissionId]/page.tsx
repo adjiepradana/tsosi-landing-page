@@ -1,74 +1,86 @@
 "use client";
 
-import React, { useState, useEffect, use, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { ASSESSMENT_ITEMS, LIKERT_OPTIONS } from "@/modules/assessment/item-config";
-import { ASSESSMENT_PATTERNS } from "@/modules/assessment/pattern-config";
+import { PATTERNS_LIST } from "@/modules/assessment/pattern-config";
 import {
-  ArrowLeft,
   ArrowRight,
-  CheckCircle2,
-  AlertCircle,
+  ArrowLeft,
   Loader2,
   Sparkles,
-  Save,
+  AlertCircle,
+  CheckCircle2,
   Grid3X3,
   Keyboard,
-  Clock,
-  HelpCircle,
 } from "lucide-react";
 
-interface QuestionnaireProps {
-  params: Promise<{ submissionId: string }>;
-}
-
-export default function QuestionnairePage({ params }: QuestionnaireProps) {
+export default function AssessmentTakePage() {
+  const params = useParams();
   const router = useRouter();
-  const resolvedParams = use(params);
-  const submissionId = resolvedParams.submissionId;
+  const submissionId = params.submissionId as string;
 
-  // Active question index (0 to 26)
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorNotice, setErrorNotice] = useState("");
+  const [participantName, setParticipantName] = useState("");
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showQuickMap, setShowQuickMap] = useState(false);
-  const [errorNotice, setErrorNotice] = useState("");
 
-  const currentItem = ASSESSMENT_ITEMS[currentIndex];
-  const currentPattern = currentItem ? ASSESSMENT_PATTERNS[currentItem.patternCode] : null;
-  const answeredCount = Object.keys(answers).length;
-  const progressPercent = Math.round((answeredCount / 27) * 100);
-
-  // Load any previously saved answers from localStorage
+  // Load existing answers or submission state
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(`tsosi_answers_${submissionId}`);
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (parsed && typeof parsed === "object") {
-            setAnswers(parsed);
+    async function loadAssessment() {
+      try {
+        const storedName =
+          typeof window !== "undefined"
+            ? sessionStorage.getItem("tsosi_participant_name") || ""
+            : "";
+        if (storedName) setParticipantName(storedName);
+
+        const res = await fetch(`/api/assessment/save-progress?sid=${submissionId}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.submission) {
+            if (data.submission.answers && typeof data.submission.answers === "object") {
+              setAnswers(data.submission.answers);
+              const answeredKeys = Object.keys(data.submission.answers).map(Number);
+              if (answeredKeys.length > 0 && answeredKeys.length < 27) {
+                const firstUnanswered = ASSESSMENT_ITEMS.findIndex(
+                  (item) => !data.submission.answers[item.itemNumber]
+                );
+                if (firstUnanswered !== -1) {
+                  setCurrentIndex(firstUnanswered);
+                }
+              }
+            }
+            if (data.submission.fullName) {
+              setParticipantName(data.submission.fullName);
+            }
           }
-        } catch {}
+        }
+      } catch (err) {
+        console.error("Failed to restore progress", err);
+      } finally {
+        setIsLoading(false);
       }
+    }
+
+    if (submissionId) {
+      loadAssessment();
     }
   }, [submissionId]);
 
-  // Debounced autosave
-  const triggerAutosave = useCallback(
-    async (newAnswers: Record<number, number>) => {
-      if (typeof window !== "undefined") {
-        localStorage.setItem(`tsosi_answers_${submissionId}`, JSON.stringify(newAnswers));
-      }
-
+  // Debounced server autosave
+  const persistAnswerToServer = useCallback(
+    async (updatedAnswers: Record<number, number>) => {
       try {
         setIsSaving(true);
         await fetch("/api/assessment/save-progress", {
@@ -76,83 +88,88 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             submissionId,
-            answers: newAnswers,
-            currentStep: currentIndex + 1,
+            answers: updatedAnswers,
           }),
         });
-      } catch {
-        // Silent network fallback, data preserved in localStorage
+      } catch (err) {
+        console.error("Autosave failed", err);
       } finally {
         setIsSaving(false);
       }
     },
-    [submissionId, currentIndex]
+    [submissionId]
   );
 
-  const handleSelectAnswer = useCallback(
-    (value: number) => {
-      if (!currentItem) return;
-      const newAnswers = { ...answers, [currentItem.itemNumber]: value };
-      setAnswers(newAnswers);
-      triggerAutosave(newAnswers);
+  const currentItem = ASSESSMENT_ITEMS[currentIndex];
+  const currentPattern = PATTERNS_LIST.find((p) => p.code === currentItem.patternCode);
+  const answeredCount = Object.keys(answers).length;
+  const progressPercent = Math.round((answeredCount / 27) * 100);
 
-      // Auto advance smoothly after brief 250ms feedback delay
-      if (currentIndex < 26) {
-        setTimeout(() => {
-          setCurrentIndex((prev) => Math.min(26, prev + 1));
-        }, 220);
-      } else {
-        setTimeout(() => {
-          setShowReviewModal(true);
-        }, 300);
-      }
-    },
-    [answers, currentItem, currentIndex, triggerAutosave]
-  );
+  // Handle single answer selection
+  const handleSelectAnswer = (value: number) => {
+    const updated = {
+      ...answers,
+      [currentItem.itemNumber]: value,
+    };
+    setAnswers(updated);
+    setErrorNotice("");
 
-  // Keyboard navigation support (1-5 to answer, ArrowLeft/ArrowRight to navigate)
+    // Persist to server
+    persistAnswerToServer(updated);
+
+    // Auto advance smoothly to next item after 220ms if not the last item
+    if (currentIndex < 26) {
+      setTimeout(() => {
+        setCurrentIndex((prev) => Math.min(26, prev + 1));
+      }, 220);
+    }
+  };
+
+  const handleNext = () => {
+    if (!answers[currentItem.itemNumber]) {
+      setErrorNotice("Silakan pilih salah satu skala penilaian untuk melanjutkan.");
+      return;
+    }
+    setErrorNotice("");
+    if (currentIndex < 26) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    setErrorNotice("");
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  };
+
+  // Keyboard shortcut listener (1-5, ArrowLeft, ArrowRight)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger if review modal or map is open
       if (showReviewModal || showQuickMap) return;
 
       if (e.key >= "1" && e.key <= "5") {
-        e.preventDefault();
-        handleSelectAnswer(parseInt(e.key, 10));
+        const val = parseInt(e.key, 10);
+        handleSelectAnswer(val);
       } else if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        setCurrentIndex((prev) => Math.max(0, prev - 1));
+        handlePrevious();
       } else if (e.key === "ArrowRight") {
-        e.preventDefault();
-        if (currentIndex < 26) {
-          setCurrentIndex((prev) => prev + 1);
-        } else {
-          setShowReviewModal(true);
+        if (answers[currentItem.itemNumber]) {
+          handleNext();
         }
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex, handleSelectAnswer, showReviewModal, showQuickMap]);
+  }, [currentIndex, answers, showReviewModal, showQuickMap]);
 
-  const handlePrevious = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentIndex < 26) {
-      setCurrentIndex((prev) => prev + 1);
-    } else {
-      setShowReviewModal(true);
-    }
-  };
-
+  // Final submission handler
   const handleSubmitFinal = async () => {
     if (answeredCount < 27) {
-      setErrorNotice("Masih ada pernyataan yang belum Anda jawab. Silakan periksa kembali.");
+      setErrorNotice(
+        `Anda baru menjawab ${answeredCount} dari 27 pernyataan. Lengkapi seluruh pernyataan untuk melihat hasil.`
+      );
       return;
     }
 
@@ -172,36 +189,47 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        setErrorNotice(data.message || "Gagal memproses penilaian.");
+        setErrorNotice(data.message || "Gagal mengirimkan asesmen.");
         setIsSubmitting(false);
         return;
       }
 
-      if (typeof window !== "undefined") {
-        localStorage.removeItem(`tsosi_answers_${submissionId}`);
-      }
-
       router.push(data.redirectUrl);
     } catch {
-      setErrorNotice("Terjadi kendala jaringan saat mengirimkan jawaban. Coba lagi.");
+      setErrorNotice("Terjadi gangguan jaringan saat pengiriman hasil.");
       setIsSubmitting(false);
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="h-10 w-10 animate-spin text-brand-vibrant" />
+        <p className="text-sm font-bold text-brand-charcoal">
+          Memuat instrumen asesmen Personal Soul Blueprint™...
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-brand-rose/30 via-brand-ivory to-white flex flex-col justify-between">
+    <div className="min-h-screen bg-white flex flex-col justify-between relative overflow-hidden">
+      {/* Dynamic ambient blur */}
+      <div className="absolute top-0 right-10 h-96 w-96 rounded-full bg-brand-vibrant/10 blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-10 left-10 h-80 w-80 rounded-full bg-brand-burgundy/10 blur-[90px] pointer-events-none" />
+
       {/* Questionnaire Top Bar */}
-      <header className="border-b border-brand-border/60 bg-white/95 backdrop-blur-xl sticky top-0 z-40 py-3.5 px-4 sm:px-8">
+      <header className="border-b border-brand-border bg-white/95 backdrop-blur-xl sticky top-0 z-40 py-3.5 px-4 sm:px-8">
         <div className="mx-auto max-w-4xl flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="relative h-9 w-9 overflow-hidden rounded-full border border-brand-burgundy/20">
+            <div className="relative h-9 w-9 overflow-hidden rounded-full border-2 border-brand-vibrant/30 p-0.5">
               <Image src="/images/logo.png" alt="Logo" width={36} height={36} className="object-contain" />
             </div>
             <div>
-              <span className="font-serif font-bold text-xs sm:text-sm text-brand-charcoal block leading-none">
+              <span className="font-black text-xs sm:text-sm text-brand-charcoal block leading-none tracking-tight">
                 Personal Soul Blueprint™
               </span>
-              <span className="text-[10px] text-brand-burgundy font-semibold uppercase tracking-wider">
+              <span className="text-[10px] text-brand-vibrant font-extrabold uppercase tracking-wider">
                 The Soul of Speaking Indonesia
               </span>
             </div>
@@ -212,24 +240,24 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
             <button
               type="button"
               onClick={() => setShowQuickMap(!showQuickMap)}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-brand-border bg-white px-3 py-1.5 font-semibold text-brand-charcoal hover:bg-brand-rose/60 transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 rounded-xl border-2 border-brand-border bg-white px-3 py-1.5 font-bold text-brand-charcoal hover:border-brand-vibrant hover:text-brand-vibrant transition-all shadow-sm"
               title="Buka peta seluruh pertanyaan"
             >
-              <Grid3X3 className="h-3.5 w-3.5 text-brand-burgundy" />
+              <Grid3X3 className="h-3.5 w-3.5 text-brand-vibrant" />
               <span className="hidden sm:inline">Peta Soal</span>
-              <span className="text-brand-burgundy font-bold">({answeredCount}/27)</span>
+              <span className="text-brand-vibrant font-black">({answeredCount}/27)</span>
             </button>
 
-            <span className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-brand-gray">
+            <span className="hidden md:inline-flex items-center gap-1.5 text-xs font-bold text-brand-gray">
               {isSaving ? (
                 <>
-                  <Loader2 className="h-3 w-3 animate-spin text-brand-burgundy" />
+                  <Loader2 className="h-3.5 w-3.5 animate-spin text-brand-vibrant" />
                   <span>Menyimpan...</span>
                 </>
               ) : (
                 <>
-                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                  <span>Tersimpan</span>
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                  <span className="text-emerald-700">Tersimpan</span>
                 </>
               )}
             </span>
@@ -238,52 +266,52 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
 
         {/* Global Progress Bar */}
         <div className="mx-auto max-w-4xl pt-3">
-          <div className="flex items-center justify-between text-[11px] text-brand-gray mb-1">
+          <div className="flex items-center justify-between text-xs font-bold text-brand-gray mb-1">
             <span>Kemajuan Asesmen</span>
-            <span className="font-bold text-brand-burgundy">{progressPercent}% Selesai</span>
+            <span className="font-black text-brand-vibrant">{progressPercent}% Selesai</span>
           </div>
-          <Progress value={answeredCount} max={27} className="h-2 rounded-full" />
+          <Progress value={answeredCount} max={27} className="h-2.5 rounded-full" />
         </div>
       </header>
 
       {/* Main Question Display */}
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative z-10">
         <div className="w-full max-w-2xl space-y-6">
-          <Card className="border border-brand-border bg-white/95 shadow-elevated rounded-3xl overflow-hidden backdrop-blur-xl">
+          <Card className="border-2 border-brand-border bg-white shadow-elevated rounded-3xl overflow-hidden">
             <CardContent className="p-6 sm:p-10 space-y-8">
               {/* Question metadata badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-brand-border/60 pb-4">
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="px-3 py-1 text-xs font-bold text-brand-burgundy">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-brand-border pb-4">
+                <div className="flex items-center gap-2.5">
+                  <Badge className="bg-brand-rose text-brand-burgundy border-brand-vibrant/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider">
                     Pernyataan {currentIndex + 1} dari 27
                   </Badge>
                   {currentPattern && (
-                    <span className="text-[11px] text-brand-gray font-medium hidden sm:inline">
+                    <span className="text-xs text-brand-gray font-bold hidden sm:inline">
                       {currentPattern.name}
                     </span>
                   )}
                 </div>
-                <span className="text-xs font-mono font-bold text-brand-burgundy/80">
+                <span className="text-xs font-mono font-black text-brand-vibrant">
                   {currentItem.questionCode}
                 </span>
               </div>
 
-              {/* Statement Statement Text */}
+              {/* Statement Text - Bold Modern Typography */}
               <div className="space-y-3 min-h-[95px] flex items-center">
-                <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-brand-charcoal leading-snug">
+                <h2 className="font-black text-xl sm:text-2xl lg:text-3xl text-brand-charcoal leading-snug tracking-tight">
                   &ldquo;{currentItem.questionText}&rdquo;
                 </h2>
               </div>
 
-              {/* Likert Scale Cards (1 to 5) */}
+              {/* Likert Scale Cards (1 to 5) - Bold & Dynamic */}
               <div className="space-y-2.5 pt-2">
-                <div className="flex items-center justify-between text-xs text-brand-gray mb-2">
-                  <span className="font-bold uppercase tracking-wider text-brand-charcoal">
+                <div className="flex items-center justify-between text-xs mb-2">
+                  <span className="font-black uppercase tracking-wider text-brand-charcoal">
                     Tingkat Kesesuaian Respons Anda:
                   </span>
-                  <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-brand-gray">
-                    <Keyboard className="h-3.5 w-3.5 text-brand-burgundy" />
-                    <span>Tekan tombol 1 - 5</span>
+                  <span className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-brand-vibrant">
+                    <Keyboard className="h-3.5 w-3.5" />
+                    <span>Tekan angka 1 - 5</span>
                   </span>
                 </div>
 
@@ -295,27 +323,27 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
                         key={opt.value}
                         type="button"
                         onClick={() => handleSelectAnswer(opt.value)}
-                        className={`group flex items-center justify-between rounded-2xl border p-4 text-left transition-all duration-200 cursor-pointer ${
+                        className={`group flex items-center justify-between rounded-2xl border-2 p-4 text-left transition-all duration-200 cursor-pointer ${
                           isSelected
-                            ? "border-brand-burgundy bg-gradient-to-r from-brand-rose/80 to-white shadow-soft ring-2 ring-brand-burgundy/30 scale-[1.01]"
-                            : "border-brand-border/80 bg-white hover:border-brand-burgundy/40 hover:bg-brand-ivory/50"
+                            ? "border-brand-vibrant bg-brand-rose/60 shadow-bold ring-2 ring-brand-vibrant/30 scale-[1.01]"
+                            : "border-brand-border bg-white hover:border-brand-vibrant/50 hover:bg-brand-rose/20"
                         }`}
                       >
                         <div className="flex items-center gap-4">
                           <span
-                            className={`flex h-9 w-9 items-center justify-center rounded-xl font-serif text-base font-bold transition-all ${
+                            className={`flex h-9 w-9 items-center justify-center rounded-xl font-black text-base transition-all ${
                               isSelected
-                                ? "bg-brand-burgundy text-white shadow-sm"
-                                : "bg-brand-ivory text-brand-charcoal group-hover:bg-brand-rose group-hover:text-brand-burgundy"
+                                ? "bg-gradient-to-r from-brand-burgundy to-brand-vibrant text-white shadow-sm"
+                                : "bg-brand-rose text-brand-burgundy group-hover:bg-brand-vibrant group-hover:text-white"
                             }`}
                           >
                             {opt.value}
                           </span>
                           <div>
-                            <div className="text-sm font-bold text-brand-charcoal group-hover:text-brand-burgundy transition-colors">
+                            <div className="text-sm font-black text-brand-charcoal group-hover:text-brand-vibrant transition-colors">
                               {opt.label}
                             </div>
-                            <div className="text-xs text-brand-gray">
+                            <div className="text-xs font-medium text-brand-gray">
                               {opt.description}
                             </div>
                           </div>
@@ -324,8 +352,8 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
                         <div
                           className={`h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all ${
                             isSelected
-                              ? "border-brand-burgundy bg-brand-burgundy text-white shadow-sm"
-                              : "border-brand-border group-hover:border-brand-burgundy/60"
+                              ? "border-brand-vibrant bg-brand-vibrant text-white shadow-sm"
+                              : "border-brand-border group-hover:border-brand-vibrant"
                           }`}
                         >
                           {isSelected && <div className="h-2 w-2 rounded-full bg-white" />}
@@ -337,12 +365,12 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
               </div>
 
               {/* Navigation Controls */}
-              <div className="pt-6 border-t border-brand-border/60 flex items-center justify-between gap-4">
+              <div className="pt-6 border-t border-brand-border flex items-center justify-between gap-4">
                 <Button
                   variant="outline"
                   onClick={handlePrevious}
                   disabled={currentIndex === 0}
-                  className="gap-2 rounded-xl border-brand-border text-brand-charcoal hover:bg-brand-rose/40 text-xs sm:text-sm font-semibold"
+                  className="gap-2 rounded-xl border-2 border-brand-border text-brand-charcoal hover:border-brand-vibrant text-xs sm:text-sm font-bold"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   <span>Sebelumnya</span>
@@ -351,7 +379,7 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
                 {currentIndex < 26 ? (
                   <Button
                     onClick={handleNext}
-                    className="gap-2 rounded-xl bg-brand-burgundy hover:bg-brand-plum text-white text-xs sm:text-sm font-semibold shadow-soft"
+                    className="gap-2 rounded-xl bg-gradient-to-r from-brand-burgundy to-brand-vibrant hover:brightness-110 text-white text-xs sm:text-sm font-extrabold shadow-bold"
                   >
                     <span>Selanjutnya</span>
                     <ArrowRight className="h-4 w-4" />
@@ -359,7 +387,7 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
                 ) : (
                   <Button
                     onClick={() => setShowReviewModal(true)}
-                    className="gap-2 rounded-xl bg-brand-plum hover:bg-brand-burgundy text-white text-xs sm:text-sm font-bold shadow-card"
+                    className="gap-2 rounded-xl bg-gradient-to-r from-brand-burgundy to-brand-vibrant hover:brightness-110 text-white text-xs sm:text-sm font-black shadow-bold"
                   >
                     <Sparkles className="h-4 w-4 text-brand-rose" />
                     <span>Tinjau & Selesaikan</span>
@@ -370,8 +398,8 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
           </Card>
 
           {/* Keyboard tip footer */}
-          <div className="text-center text-[11px] text-brand-gray flex items-center justify-center gap-1.5">
-            <Keyboard className="h-3.5 w-3.5 text-brand-burgundy" />
+          <div className="text-center text-xs font-semibold text-brand-gray flex items-center justify-center gap-1.5">
+            <Keyboard className="h-3.5 w-3.5 text-brand-vibrant" />
             <span>Gunakan tombol angka <strong>1 - 5</strong> atau tombol panah keyboard untuk navigasi cepat</span>
           </div>
         </div>
@@ -380,20 +408,20 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
       {/* Quick Jump Map Drawer */}
       {showQuickMap && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-elevated border border-brand-border space-y-5 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-brand-border/60 pb-3">
+          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-elevated border-2 border-brand-border space-y-5 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-brand-border pb-3">
               <div>
-                <h3 className="font-serif text-xl font-bold text-brand-charcoal">
+                <h3 className="font-black text-xl text-brand-charcoal tracking-tight">
                   Peta 27 Pernyataan
                 </h3>
-                <p className="text-xs text-brand-gray">
+                <p className="text-xs text-brand-gray font-medium">
                   Klik nomor berapa pun untuk langsung berpindah ke pertanyaan tersebut.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setShowQuickMap(false)}
-                className="text-xs font-bold text-brand-gray hover:text-brand-burgundy"
+                className="text-xs font-black text-brand-vibrant hover:underline"
               >
                 Tutup
               </button>
@@ -412,28 +440,28 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
                       setCurrentIndex(item.itemNumber - 1);
                       setShowQuickMap(false);
                     }}
-                    className={`h-11 rounded-xl flex flex-col items-center justify-center font-bold text-xs transition-all ${
+                    className={`h-11 rounded-xl flex flex-col items-center justify-center font-black text-xs transition-all ${
                       isCurrent
-                        ? "ring-2 ring-brand-burgundy bg-brand-burgundy text-white shadow-sm"
+                        ? "ring-2 ring-brand-vibrant bg-gradient-to-r from-brand-burgundy to-brand-vibrant text-white shadow-bold"
                         : isAnswered
-                        ? "bg-brand-rose text-brand-burgundy border border-brand-burgundy/30 hover:bg-brand-burgundy/20"
-                        : "bg-brand-ivory text-brand-gray border border-brand-border hover:bg-white"
+                        ? "bg-brand-rose text-brand-burgundy border-2 border-brand-vibrant/30 hover:border-brand-vibrant"
+                        : "bg-white text-brand-gray border-2 border-brand-border hover:border-brand-charcoal"
                     }`}
                   >
                     <span>{item.itemNumber}</span>
-                    <span className="text-[9px] font-normal opacity-80">{val || "-"}</span>
+                    <span className="text-[9px] font-bold opacity-80">{val || "-"}</span>
                   </button>
                 );
               })}
             </div>
 
-            <div className="text-xs text-brand-gray flex items-center justify-between pt-2 border-t border-brand-border/60">
+            <div className="text-xs font-bold text-brand-gray flex items-center justify-between pt-2 border-t border-brand-border">
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-brand-rose border border-brand-burgundy/40" />
+                <span className="h-2.5 w-2.5 rounded-full bg-brand-vibrant" />
                 <span>Terjawab ({answeredCount})</span>
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-brand-ivory border border-brand-border" />
+                <span className="h-2.5 w-2.5 rounded-full bg-brand-border" />
                 <span>Belum ({27 - answeredCount})</span>
               </span>
             </div>
@@ -444,23 +472,23 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
       {/* Review Modal Dialog */}
       {showReviewModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-xl rounded-3xl bg-white p-6 sm:p-8 shadow-elevated border border-brand-border space-y-6 max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-brand-border/60 pb-4">
+          <div className="w-full max-w-xl rounded-3xl bg-white p-6 sm:p-8 shadow-elevated border-2 border-brand-border space-y-6 max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-brand-border pb-4">
               <div>
-                <h3 className="font-serif text-2xl font-bold text-brand-charcoal">
+                <h3 className="font-black text-2xl text-brand-charcoal tracking-tight">
                   Tinjauan Pernyataan Asesmen
                 </h3>
-                <p className="text-xs text-brand-gray">
+                <p className="text-xs text-brand-gray font-medium">
                   Periksa kelengkapan 27 jawaban Anda sebelum dikalkulasi oleh sistem skoring.
                 </p>
               </div>
-              <Badge variant={answeredCount === 27 ? "success" : "warning"} className="text-xs font-bold">
+              <Badge className="bg-brand-burgundy text-white font-black text-xs">
                 {answeredCount}/27 Terjawab
               </Badge>
             </div>
 
             {errorNotice && (
-              <div className="rounded-2xl bg-red-50 border border-red-200 p-3.5 text-xs text-red-700 flex items-center gap-2">
+              <div className="rounded-2xl bg-red-50 border-2 border-red-200 p-3.5 text-xs text-red-700 font-bold flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{errorNotice}</span>
               </div>
@@ -480,22 +508,22 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
                       setShowReviewModal(false);
                     }}
                     title={`Pernyataan ${item.itemNumber}: ${isAnswered ? `Nilai ${val}` : "Belum dijawab"}`}
-                    className={`h-11 rounded-xl flex flex-col items-center justify-center font-bold text-xs transition-all ${
+                    className={`h-11 rounded-xl flex flex-col items-center justify-center font-black text-xs transition-all ${
                       isAnswered
-                        ? "bg-brand-rose text-brand-burgundy border border-brand-burgundy/30 hover:bg-brand-burgundy hover:text-white"
-                        : "bg-red-50 text-red-600 border border-red-200 hover:bg-red-100"
+                        ? "bg-brand-rose text-brand-burgundy border-2 border-brand-vibrant/30 hover:bg-brand-vibrant hover:text-white"
+                        : "bg-red-50 text-red-600 border-2 border-red-200 hover:bg-red-100"
                     }`}
                   >
                     <span>{item.itemNumber}</span>
-                    <span className="text-[9px] font-normal opacity-80">{val ? val : "-"}</span>
+                    <span className="text-[9px] font-bold opacity-80">{val ? val : "-"}</span>
                   </button>
                 );
               })}
             </div>
 
-            <div className="text-xs text-brand-gray flex items-center justify-between pt-1">
+            <div className="text-xs font-bold text-brand-gray flex items-center justify-between pt-1">
               <span className="flex items-center gap-1.5">
-                <span className="h-3 w-3 rounded-md bg-brand-rose border border-brand-burgundy/30 inline-block" />
+                <span className="h-3 w-3 rounded-md bg-brand-rose border border-brand-vibrant/30 inline-block" />
                 <span>Sudah dijawab</span>
               </span>
               <span className="flex items-center gap-1.5">
@@ -504,11 +532,11 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
               </span>
             </div>
 
-            <div className="pt-4 border-t border-brand-border/60 flex flex-col sm:flex-row gap-3">
+            <div className="pt-4 border-t border-brand-border flex flex-col sm:flex-row gap-3">
               <Button
                 variant="outline"
                 onClick={() => setShowReviewModal(false)}
-                className="w-full sm:w-1/2 rounded-xl text-xs sm:text-sm font-semibold"
+                className="w-full sm:w-1/2 rounded-xl border-2 text-xs sm:text-sm font-bold"
                 disabled={isSubmitting}
               >
                 Kembali Memeriksa
@@ -517,7 +545,7 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
               <Button
                 onClick={handleSubmitFinal}
                 disabled={isSubmitting || answeredCount < 27}
-                className="w-full sm:w-1/2 rounded-xl bg-brand-burgundy hover:bg-brand-plum text-white font-bold gap-2 shadow-card text-xs sm:text-sm py-3"
+                className="w-full sm:w-1/2 rounded-xl bg-gradient-to-r from-brand-burgundy to-brand-vibrant hover:brightness-110 text-white font-black gap-2 shadow-bold text-xs sm:text-sm py-3.5"
               >
                 {isSubmitting ? (
                   <>
@@ -537,7 +565,7 @@ export default function QuestionnairePage({ params }: QuestionnaireProps) {
       )}
 
       {/* Footer Minimal */}
-      <footer className="py-3.5 text-center text-xs text-brand-gray border-t border-brand-border/40 bg-white/60">
+      <footer className="py-3.5 text-center text-xs font-semibold text-brand-gray border-t border-brand-border bg-white">
         The Soul of Speaking Indonesia • Dokumen refleksi diri • Bukan alat diagnosis
       </footer>
     </div>

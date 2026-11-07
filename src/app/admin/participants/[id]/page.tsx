@@ -62,7 +62,7 @@ export default async function ParticipantDetailPage({
                 <ArrowLeft className="h-3 w-3" />
                 <span>Kembali ke Daftar Partisipan</span>
               </Link>
-              <h1 className="font-serif text-3xl font-bold text-brand-charcoal">
+              <h1 className="font-black text-3xl text-brand-charcoal tracking-tight">
                 Detail Asesmen: {participant.fullName}
               </h1>
             </div>
@@ -85,7 +85,7 @@ export default async function ParticipantDetailPage({
               <span className="text-[10px] font-semibold uppercase tracking-wider text-brand-gray block">
                 Nama Lengkap
               </span>
-              <div className="font-serif text-lg font-bold text-brand-charcoal mt-1 flex items-center gap-2">
+              <div className="font-black text-lg text-brand-charcoal mt-1 flex items-center gap-2 tracking-tight">
                 <User className="h-4 w-4 text-brand-burgundy" />
                 <span>{participant.fullName}</span>
               </div>
@@ -126,14 +126,14 @@ export default async function ParticipantDetailPage({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <Card className="lg:col-span-5 border border-brand-border bg-white p-6 shadow-soft flex flex-col justify-between">
               <div className="space-y-4">
-                <h3 className="font-serif text-xl font-bold text-brand-charcoal">
+                <h3 className="font-black text-xl text-brand-charcoal tracking-tight">
                   Ringkasan Nilai Asesmen
                 </h3>
                 <div className="rounded-2xl bg-brand-rose/40 border border-brand-burgundy/20 p-6 text-center space-y-2">
                   <span className="text-xs uppercase font-semibold text-brand-gray">
                     Skor Rata-rata Keseluruhan
                   </span>
-                  <div className="font-serif text-4xl font-bold text-brand-burgundy">
+                  <div className="font-black text-4xl text-brand-burgundy tracking-tight">
                     {scores.overallScore.toFixed(2)}{" "}
                     <span className="text-sm font-normal text-brand-charcoal/60">/ 5</span>
                   </div>
@@ -157,7 +157,7 @@ export default async function ParticipantDetailPage({
             </Card>
 
             <Card className="lg:col-span-7 border border-brand-border bg-white p-6 shadow-soft">
-              <h3 className="font-serif text-xl font-bold text-brand-charcoal mb-2">
+              <h3 className="font-black text-xl text-brand-charcoal mb-2 tracking-tight">
                 Distribusi 9 Pola Komunikasi
               </h3>
               <PatternChart patterns={scores.patternResults} />
@@ -167,7 +167,7 @@ export default async function ParticipantDetailPage({
           {/* All 27 Questions Responses Audit Table */}
           <Card className="border border-brand-border bg-white shadow-soft">
             <CardHeader className="border-b border-brand-border/60 pb-4">
-              <CardTitle className="font-serif text-xl text-brand-charcoal">
+              <CardTitle className="font-black text-xl text-brand-charcoal tracking-tight">
                 Audit Lengkap 27 Jawaban Pernyataan
               </CardTitle>
               <p className="text-xs text-brand-gray">
@@ -221,7 +221,7 @@ export default async function ParticipantDetailPage({
           {reflection && (
             <Card className="border border-brand-border bg-white shadow-soft">
               <CardHeader className="border-b border-brand-border/60 pb-4">
-                <CardTitle className="font-serif text-xl text-brand-charcoal">
+                <CardTitle className="font-black text-xl text-brand-charcoal tracking-tight">
                   Catatan Refleksi Mandiri Partisipan
                 </CardTitle>
                 <p className="text-xs text-brand-gray">

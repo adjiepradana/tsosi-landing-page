@@ -2,39 +2,39 @@ import React from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function PrivacyPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-brand-ivory">
+    <div className="flex min-h-screen flex-col bg-white">
       <Navbar />
       <main className="flex-1 mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 space-y-8">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs text-brand-gray hover:text-brand-burgundy"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-gray hover:text-brand-vibrant"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Kembali ke Beranda</span>
         </Link>
 
-        <Card className="border border-brand-border bg-white shadow-soft p-6 sm:p-10 space-y-6">
-          <div className="space-y-2 border-b border-brand-border/60 pb-6">
-            <Badge variant="secondary" className="text-xs font-semibold">
+        <Card className="border-2 border-brand-border bg-white shadow-soft p-6 sm:p-10 space-y-6">
+          <div className="space-y-2 border-b border-brand-border pb-6">
+            <Badge className="bg-brand-rose text-brand-burgundy border-brand-vibrant/20 text-xs font-black uppercase tracking-wider">
               Kebijakan Privasi Data
             </Badge>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-brand-charcoal">
+            <h1 className="font-black text-3xl sm:text-4xl text-brand-charcoal tracking-tight">
               Perlindungan & Privasi Data Partisipan
             </h1>
-            <p className="text-xs text-brand-gray">
+            <p className="text-xs font-medium text-brand-gray">
               Berlaku sejak 1 November 2026 • The Soul of Speaking Indonesia
             </p>
           </div>
 
-          <div className="space-y-6 text-xs sm:text-sm text-brand-gray leading-relaxed">
+          <div className="space-y-6 text-xs sm:text-sm text-brand-gray font-medium leading-relaxed">
             <section className="space-y-2">
-              <h2 className="font-serif text-lg font-bold text-brand-charcoal">
+              <h2 className="font-black text-lg text-brand-charcoal tracking-tight">
                 1. Komitmen Privasi
               </h2>
               <p>
@@ -43,7 +43,7 @@ export default function PrivacyPage() {
             </section>
 
             <section className="space-y-2">
-              <h2 className="font-serif text-lg font-bold text-brand-charcoal">
+              <h2 className="font-black text-lg text-brand-charcoal tracking-tight">
                 2. Data yang Kami Kumpulkan
               </h2>
               <ul className="list-disc pl-5 space-y-1">
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
             </section>
 
             <section className="space-y-2">
-              <h2 className="font-serif text-lg font-bold text-brand-charcoal">
+              <h2 className="font-black text-lg text-brand-charcoal tracking-tight">
                 3. Tujuan Pemrosesan Data
               </h2>
               <p>
@@ -68,7 +68,7 @@ export default function PrivacyPage() {
             </section>
 
             <section className="space-y-2">
-              <h2 className="font-serif text-lg font-bold text-brand-charcoal">
+              <h2 className="font-black text-lg text-brand-charcoal tracking-tight">
                 4. Keamanan Akses & Tokenisasi
               </h2>
               <p>
@@ -77,7 +77,7 @@ export default function PrivacyPage() {
             </section>
 
             <section className="space-y-2">
-              <h2 className="font-serif text-lg font-bold text-brand-charcoal">
+              <h2 className="font-black text-lg text-brand-charcoal tracking-tight">
                 5. Tidak Ada Penjualan Data
               </h2>
               <p>

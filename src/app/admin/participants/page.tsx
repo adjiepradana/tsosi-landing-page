@@ -63,7 +63,7 @@ export default async function ParticipantsManagementPage({
                   <span>Kembali ke Dashboard</span>
                 </Link>
               </div>
-              <h1 className="font-serif text-3xl font-bold text-brand-charcoal">
+              <h1 className="font-black text-3xl text-brand-charcoal tracking-tight">
                 Kelola Partisipan Asesmen
               </h1>
               <p className="text-xs sm:text-sm text-brand-gray pt-1">
@@ -176,7 +176,7 @@ export default async function ParticipantsManagementPage({
                           <td className="py-3.5 px-4 text-brand-gray">
                             {formatDate(p.submittedAt)}
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-brand-burgundy font-serif text-sm">
+                          <td className="py-3.5 px-4 font-black text-brand-vibrant text-sm">
                             {p.overallScore.toFixed(2)}/5
                           </td>
                           <td className="py-3.5 px-4">

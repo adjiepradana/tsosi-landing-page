@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, CheckCircle2, Sparkles } from "lucide-react";
+import { Calendar, Sparkles } from "lucide-react";
 
 export function SevenDayPlan() {
   const days = [
@@ -50,16 +50,16 @@ export function SevenDayPlan() {
   ];
 
   return (
-    <Card className="border border-brand-border bg-white shadow-soft">
-      <CardHeader className="border-b border-brand-border/60 pb-5">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-burgundy mb-1">
+    <Card className="border-2 border-brand-border bg-white shadow-soft">
+      <CardHeader className="border-b border-brand-border pb-5">
+        <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-brand-vibrant mb-1">
           <Calendar className="h-4 w-4" />
           <span>Panduan Praktik 7 Hari</span>
         </div>
-        <CardTitle className="font-serif text-2xl text-brand-charcoal">
+        <CardTitle className="font-black text-2xl text-brand-charcoal tracking-tight">
           Latihan Komunikasi Sadar (Conscious Communication Practice)
         </CardTitle>
-        <CardDescription className="text-xs sm:text-sm text-brand-gray pt-1">
+        <CardDescription className="text-xs sm:text-sm text-brand-gray font-medium pt-1">
           Langkah bertahap untuk mengintegrasikan hasil refleksi ke dalam interaksi keseharian Anda.
         </CardDescription>
       </CardHeader>
@@ -69,24 +69,33 @@ export function SevenDayPlan() {
           {days.map((item, idx) => (
             <div
               key={idx}
-              className={`rounded-2xl border p-5 space-y-3 transition-all ${
-                idx === 6 ? "md:col-span-2 lg:col-span-3 bg-brand-rose/30 border-brand-burgundy/30" : "bg-brand-ivory/30 border-brand-border/80"
+              className={`rounded-2xl border-2 p-5 space-y-3 transition-all ${
+                idx === 6
+                  ? "md:col-span-2 lg:col-span-3 bg-brand-rose/60 border-brand-vibrant/40 shadow-sm"
+                  : "bg-white border-brand-border hover:border-brand-vibrant/40 shadow-sm"
               }`}
             >
               <div className="flex items-center justify-between">
-                <Badge variant={idx === 6 ? "default" : "secondary"} className="text-xs font-semibold">
+                <Badge className={idx === 6 ? "bg-brand-burgundy text-white font-black text-xs" : "bg-brand-rose text-brand-burgundy font-black text-xs"}>
                   {item.day}
                 </Badge>
-                <Sparkles className="h-4 w-4 text-brand-burgundy/50" />
+                <Sparkles className="h-4 w-4 text-brand-vibrant" />
               </div>
-              <h4 className="font-serif text-base font-bold text-brand-charcoal">
-                {item.title}
-              </h4>
-              <p className="text-xs text-brand-gray leading-relaxed">
-                <strong>Fokus:</strong> {item.focus}
-              </p>
-              <div className="text-xs bg-white/80 p-3 rounded-xl border border-brand-border/60 text-brand-charcoal leading-relaxed">
-                <span className="font-bold text-brand-burgundy">Latihan:</span> {item.practice}
+
+              <div>
+                <h4 className="font-black text-base text-brand-charcoal tracking-tight">
+                  {item.title}
+                </h4>
+                <p className="text-xs text-brand-gray font-medium mt-1 leading-relaxed">
+                  {item.focus}
+                </p>
+              </div>
+
+              <div className="pt-2 border-t border-brand-border text-xs text-brand-charcoal bg-brand-rose/30 p-2.5 rounded-xl border border-brand-vibrant/10">
+                <span className="font-black text-brand-vibrant block mb-0.5 text-[11px] uppercase tracking-wider">
+                  Latihan Praktik:
+                </span>
+                <span className="font-medium">{item.practice}</span>
               </div>
             </div>
           ))}
